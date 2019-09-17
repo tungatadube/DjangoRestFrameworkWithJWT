@@ -16,14 +16,3 @@ class SubscriberViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
 
-@api_view(["POST"])
-def login(request):
-    username = request.data.get("username")
-    password = request.data.get("password")
-
-    user = authenticate(username=username, password=password)
-    if not user:
-        return Response({"message": "Login failed"}, status=HTTP_401_UNAUTHORIZED)
-
-    token, _ = Token.objects.get_or_create(user=user)
-    return Response({"token": token.key})
